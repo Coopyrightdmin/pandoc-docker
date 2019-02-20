@@ -1,6 +1,8 @@
 FROM haskell:8.0
 
-MAINTAINER James Gregory <james@jagregory.com>
+LABEL maintainer="Alien6 <contact@alien6.com>" \
+		  version="1.0" \
+	  	original.author="James Gregory <james@jagregory.com>"
 
 # install latex packages
 RUN apt-get update -y \
@@ -14,12 +16,8 @@ RUN apt-get update -y \
     fontconfig \
     lmodern
 
-# will ease up the update process
-# updating this env variable will trigger the automatic build of the Docker image
-ENV PANDOC_VERSION "1.19.2.1"
-
 # install pandoc
-RUN cabal update && cabal install pandoc-${PANDOC_VERSION}
+RUN cabal update && cabal install pandoc && cabal install pandoc-citeproc
 
 WORKDIR /source
 
