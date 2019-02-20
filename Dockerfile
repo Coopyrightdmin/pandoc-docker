@@ -1,20 +1,12 @@
-FROM haskell:8.0
+FROM alpine:edge
 
 LABEL maintainer="Alien6 <contact@alien6.com>" \
-		  version="1.0" \
-	  	original.author="James Gregory <james@jagregory.com>"
+		  version="1.0" 
 
 # install latex packages
-RUN apt-get update -y \
-  && apt-get install -y -o Acquire::Retries=10 --no-install-recommends \
-    texlive-latex-base \
-    texlive-xetex latex-xcolor \
-    texlive-math-extra \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-    texlive-bibtex-extra \
-    fontconfig \
-    lmodern
+RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
+    && apk update \
+    && apk add wget ghc cabal ca-certificates musl-dev shadow linux-headers zlib-dev 
 
 # install pandoc
 RUN cabal update && cabal install pandoc && cabal install pandoc-citeproc
